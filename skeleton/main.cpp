@@ -8,6 +8,8 @@
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 
+#include "Particle.h"
+
 #include <iostream>
 
 
@@ -28,6 +30,11 @@ PxPvd*                  gPvd        = NULL;
 PxDefaultCpuDispatcher*	gDispatcher = NULL;
 PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
+
+/// <summary>
+/// Particula
+/// </summary>
+std::unique_ptr<Particle> particle;
 
 
 // Initialize physics engine
@@ -53,7 +60,9 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	}
+
+	particle = std::make_unique<Particle>(Vector3(10.0, 10.0, 0.0), Vector3(0.0, 5.0, 0.0));
+}
 
 
 // Function to configure what happens in each step of physics
@@ -65,6 +74,8 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
+
+	particle.get()->integrate(t);
 }
 
 // Function to clean data
@@ -83,7 +94,7 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
-	}
+}
 
 // Function called when a key is pressed
 void keyPress(unsigned char key, const PxTransform& camera)
