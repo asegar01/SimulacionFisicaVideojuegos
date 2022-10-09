@@ -5,6 +5,11 @@ Particle::Particle(Vector3 Pos, Vector3 Vel) : pose(Pos), vel(Vel)
 	renderItem = std::make_unique<RenderItem>(CreateShape(PxSphereGeometry(1)), &pose, Vector4(1.0, 0.0, 1.0, 1.0));
 }
 
+Particle::Particle(Vector3 Pos, Vector3 Vel, Vector3 Acc, float Damping) : pose(Pos), vel(Vel), a(Acc), damping(Damping)
+{
+	renderItem = std::make_unique<RenderItem>(CreateShape(PxSphereGeometry(1)), &pose, Vector4(1.0, 0.0, 1.0, 1.0));
+}
+
 Particle::~Particle()
 {
 	renderItem.release();
@@ -20,8 +25,8 @@ void Particle::integrate(double t)
 	pose.p += vel * t;
 
 	// Update linear velocity
-	//vel += a * t;
+	vel += a * t;
 
 	// Impose drag (damping)
-	//vel *= powf(damping, t);
+	vel *= powf(damping, t);
 }

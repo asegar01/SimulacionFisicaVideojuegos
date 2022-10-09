@@ -61,7 +61,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	particle = std::make_unique<Particle>(Vector3(10.0, 10.0, 0.0), Vector3(0.0, 5.0, 0.0));
+	particle = std::make_unique<Particle>(Vector3(10.0, 10.0, 0.0), Vector3(0.0, 10.0, 0.0), Vector3(0.0, 10.0, 0.0), 0.9);
 }
 
 
