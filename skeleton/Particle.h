@@ -16,6 +16,11 @@ public:
 
 	void integrate(double t);
 
+	void setMass(float Mass) { mass = Mass; };
+	void setVelocity(Vector3 Vel) { vel = Vel; };
+	void setAcceleration(Vector3 Acc) { a = Acc; };
+	void setDamping(float Damping) { damping = Damping; };
+
 private:
 	Vector3 vel;
 	PxTransform pose;
@@ -23,4 +28,6 @@ private:
 
 	Vector3 a;
 	float damping;
+
+	float mass;
 };

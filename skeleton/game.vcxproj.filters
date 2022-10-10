@@ -10,9 +10,8 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="callbacks.cpp" />
-    <ClCompile Include="Particle.cpp">
-      <Filter>Render</Filter>
-    </ClCompile>
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -24,9 +23,8 @@
     </ClInclude>
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="callbacks.hpp" />
-    <ClInclude Include="Particle.h">
-      <Filter>Render</Filter>
-    </ClInclude>
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="Projectile.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

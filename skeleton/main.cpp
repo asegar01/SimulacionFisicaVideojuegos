@@ -9,6 +9,7 @@
 #include "callbacks.hpp"
 
 #include "Particle.h"
+#include "Projectile.h"
 
 #include <iostream>
 
@@ -36,6 +37,8 @@ ContactReportCallback gContactReportCallback;
 /// </summary>
 std::unique_ptr<Particle> particle;
 
+std::vector<Projectile*> projectiles;
+
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -61,7 +64,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	particle = std::make_unique<Particle>(Vector3(10.0, 10.0, 0.0), Vector3(0.0, 10.0, 0.0), Vector3(0.0, 10.0, 0.0), 0.9);
+	//particle = std::make_unique<Particle>(Vector3(10.0, 10.0, 0.0), Vector3(0.0, 10.0, 0.0), Vector3(0.0, 10.0, 0.0), 0.9);
 }
 
 
@@ -75,7 +78,25 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	particle.get()->integrate(t);
+	//particle.get()->integrate(t);
+
+	// Update for each particle
+	for (auto shot : projectiles)
+	{
+		if (shot != nullptr)
+		{
+			shot->integrate(t);
+
+			// Remove particle if invalid
+			//if (shot.getPosition().y < 0.0f ||
+			//	shot->startTime + 5000 < GetLastFrame() ||
+			//	shot->particle.getPosition().z > 200.0f)
+			//{
+			//	// Free the slot
+			//	shot->type = UNUSED;
+			//}
+		}
+	}
 }
 
 // Function to clean data
@@ -94,6 +115,15 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
+
+	for (auto shot : projectiles) 
+	{
+		if (shot != nullptr) 
+		{
+			delete shot;
+			shot = nullptr;
+		}
+	}
 }
 
 // Function called when a key is pressed
@@ -103,13 +133,23 @@ void keyPress(unsigned char key, const PxTransform& camera)
 
 	switch(toupper(key))
 	{
-	//case 'B': break;
-	//case ' ':	break;
 	case ' ':
 	{
 		break;
 	}
-	default:
+	case 'P': // PISTOL
+		projectiles.push_back(new Projectile(Projectile::PISTOL));
+		break;
+	case 'R': // ARTILLERY
+		projectiles.push_back(new Projectile(Projectile::ARTILLERY));
+		break;
+	case 'F': // FIREBALL
+		projectiles.push_back(new Projectile(Projectile::FIREBALL));
+		break;
+	case 'L': // LASER
+		projectiles.push_back(new Projectile(Projectile::LASER));
+		break;
+	default: 
 		break;
 	}
 }
