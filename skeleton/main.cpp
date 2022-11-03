@@ -10,10 +10,12 @@
 
 #include "Particle.h"
 #include "Projectile.h"
+#include "ParticleSystem.h"
 
 #include <iostream>
 
-
+#include <list>
+#include <chrono>
 
 using namespace physx;
 
@@ -35,10 +37,14 @@ ContactReportCallback gContactReportCallback;
 /// <summary>
 /// Particula
 /// </summary>
-std::unique_ptr<Particle> particle;
+//std::unique_ptr<Particle> particle;
 
-std::vector<Projectile*> projectiles;
+std::list<Projectile*> projectiles;
 
+/// <summary>
+/// Sistema de particulas
+/// </summary>
+std::unique_ptr<ParticleSystem> particleSystem;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -65,6 +71,8 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 
 	//particle = std::make_unique<Particle>(Vector3(10.0, 10.0, 0.0), Vector3(0.0, 10.0, 0.0), Vector3(0.0, 10.0, 0.0), 0.9);
+
+	particleSystem = std::make_unique<ParticleSystem>();
 }
 
 
@@ -80,23 +88,7 @@ void stepPhysics(bool interactive, double t)
 
 	//particle.get()->integrate(t);
 
-	// Update for each particle
-	for (auto shot : projectiles)
-	{
-		if (shot != nullptr)
-		{
-			shot->integrate(t);
-
-			// Remove particle if invalid
-			//if (shot.getPosition().y < 0.0f ||
-			//	shot->startTime + 5000 < GetLastFrame() ||
-			//	shot->particle.getPosition().z > 200.0f)
-			//{
-			//	// Free the slot
-			//	shot->type = UNUSED;
-			//}
-		}
-	}
+	particleSystem->update(t);
 }
 
 // Function to clean data
