@@ -2,14 +2,17 @@
 
 #include "RenderUtils.hpp"
 #include "core.hpp"
+#include <list>
+#include <random>
+#include "Particle.h"
 
-#include "Firework.h"
+class Particle;
 
 class ParticleGenerator
 {
 public:
 	ParticleGenerator(string name, Vector3 pos, Vector3 vel, double genProb, Particle* model) :
-		_name(name), _mean_pos(pos), _mean_vel(vel), _generation_probability(genProb), _model(model) {};;
+		_name(name), _mean_pos(pos), _mean_vel(vel), _generation_probability(genProb), _model(model) {};
 	~ParticleGenerator() { delete _model; };
 
 	// Establece el tipo de particula

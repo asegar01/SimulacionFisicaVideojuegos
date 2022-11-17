@@ -1,9 +1,13 @@
 #pragma once
 
+#include "Projectile.h"
 #include "Particle.h"
 #include "ParticleGenerator.h"
 #include "UniformParticleGenerator.h"
 #include "GaussianParticleGenerator.h"
+#include "Firework.h"
+#include "ParticleForceRegistry.h"
+#include "GravityForceGenerator.h"
 
 class ParticleSystem
 {
@@ -17,11 +21,13 @@ public:
 	ParticleGenerator* getParticleGenerator(string name);
 
 	// Genera un sistema de fuego artificiales
-	void generateFireworkSystem() {};
+	void generateFireworkSystem();
 
 	void shootFirework(int type);
 
 	void onParticleDeath(Particle*);
+
+	void addGravityParticles();
 
 protected:
 	list<Particle*> _particles;
@@ -29,4 +35,6 @@ protected:
 
 	vector<Firework*> _fireworks_pool;
 	ParticleGenerator* _firework_gen;
+
+	unique_ptr<ParticleForceRegistry> pFR;
 };

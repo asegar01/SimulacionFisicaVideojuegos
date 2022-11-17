@@ -87,6 +87,7 @@ void stepPhysics(bool interactive, double t)
 	gScene->fetchResults(true);
 
 	//particle.get()->integrate(t);
+	for (auto p : projectiles) p->integrate(t);
 
 	particleSystem->update(t);
 }
@@ -135,11 +136,17 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'R': // ARTILLERY
 		projectiles.push_back(new Projectile(Projectile::ARTILLERY));
 		break;
-	case 'F': // FIREBALL
+	case 'B': // FIREBALL
 		projectiles.push_back(new Projectile(Projectile::FIREBALL));
 		break;
 	case 'L': // LASER
 		projectiles.push_back(new Projectile(Projectile::LASER));
+		break;
+	case 'F': // FIREWORK
+		particleSystem.get()->shootFirework(0);
+		break;
+	case 'G': // GRAVITY
+		particleSystem.get()->addGravityParticles();
 		break;
 	default: 
 		break;
