@@ -148,6 +148,9 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'G': // GRAVITY
 		particleSystem.get()->addGravityParticles();
 		break;
+	case 'N': // WIND
+		particleSystem.get()->addWindParticles();
+		break;
 	default: 
 		break;
 	}

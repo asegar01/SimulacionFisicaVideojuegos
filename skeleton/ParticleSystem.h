@@ -8,6 +8,7 @@
 #include "Firework.h"
 #include "ParticleForceRegistry.h"
 #include "GravityForceGenerator.h"
+#include "WindGenerator.h"
 
 class ParticleSystem
 {
@@ -27,7 +28,11 @@ public:
 
 	void onParticleDeath(Particle*);
 
+	// Gravedad
 	void addGravityParticles();
+
+	// Viento
+	void addWindParticles();
 
 protected:
 	list<Particle*> _particles;

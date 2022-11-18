@@ -150,3 +150,18 @@ void ParticleSystem::addGravityParticles()
 	pFR.get()->addRegistry(gFG, p);
 	pFR.get()->addRegistry(gFG, p2);
 }
+
+void ParticleSystem::addWindParticles() 
+{
+	auto p = new Projectile(Projectile::PISTOL);
+	p->setPosition({ 0.0, 40.0, 0.0 });
+	p->setVelocity({ 30.0, 0.0, 0.0 });
+	p->setAcceleration({ 0.0, 0.0, 0.0 });
+	p->setMass(50.0f);
+	p->setRemainingTime(5.0);
+	_particles.push_back(p);
+
+	auto wFG = new WindGenerator({ -10.0, 10.0, 0.0 }, 0.1, 0.0, 50.0, 50.0, 50.0);
+
+	pFR.get()->addRegistry(wFG, p);
+}
