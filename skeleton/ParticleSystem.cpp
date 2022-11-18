@@ -82,6 +82,9 @@ void ParticleSystem::update(double t)
 
 	// Actualiza las fuerzas
 	pFR.get()->updateForces(t);
+
+	// Actualiza el tiempo de explosion
+	if (explode) eFG->addTime(t);
 }
 
 ParticleGenerator* ParticleSystem::getParticleGenerator(string name) 
@@ -188,4 +191,14 @@ void ParticleSystem::addWhirlwindParticles()
 	auto whFG = new WhirlwindGenerator({ 10.0, 0.0, 10.0 }, 0.1, 0.2);
 
 	pFR.get()->addRegistry(whFG, p);
+}
+
+void ParticleSystem::addExplosionParticles() 
+{
+	explode = true;
+
+	eFG = new ExplosionGenerator({ 0.0, 0.0, 0.0 }, 100.0, 100.0);
+
+	for (auto p : _particles)
+		pFR.get()->addRegistry(eFG, p);
 }

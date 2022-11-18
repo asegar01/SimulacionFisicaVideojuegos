@@ -3,7 +3,6 @@
 Particle::Particle(Vector3 Pos, Vector3 Vel) : pose(Pos), _vel(Vel), _remaining_time(5)
 {
 	//renderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), &pose, Vector4(1.0, 0.0, 1.0, 1.0));
-	//renderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), &pose, Vector4(1.0, 0.0, 1.0, 1.0));
 }
 
 Particle::Particle(ParticleType type, Vector3 Pos, Vector3 Vel, Vector3 Acc, float Damping, float Mass)

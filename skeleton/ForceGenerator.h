@@ -1,8 +1,11 @@
 #pragma once
 
-#include "Particle.h"
+#include <iostream>
 #include <list>
 #include <random>
+
+#include "core.hpp"
+#include "Particle.h"
 
 class ForceGenerator 
 {

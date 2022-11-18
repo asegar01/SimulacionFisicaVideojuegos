@@ -154,6 +154,9 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'H': // WINDWHIRL
 		particleSystem.get()->addWhirlwindParticles();
 		break;
+	case 'X': // EXPLOSION
+		particleSystem.get()->addExplosionParticles();
+		break;
 	default: 
 		break;
 	}

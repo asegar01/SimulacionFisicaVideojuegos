@@ -10,7 +10,7 @@ public:
 	virtual void updateForce(Particle* particle, double t);
 
 protected:
-	// Velocidad del torbellino
+	// Origen del torbellino
 	Vector3 _origin;
 
 	// Fuerza del torbellino

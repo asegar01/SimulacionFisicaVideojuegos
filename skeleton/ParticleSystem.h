@@ -10,6 +10,7 @@
 #include "GravityForceGenerator.h"
 #include "WindGenerator.h"
 #include "WhirlwindGenerator.h"
+#include "ExplosionGenerator.h"
 
 class ParticleSystem
 {
@@ -38,6 +39,9 @@ public:
 	// Torbellino
 	void addWhirlwindParticles();
 
+	// Explosion
+	void addExplosionParticles();
+
 protected:
 	list<Particle*> _particles;
 	list<ParticleGenerator*> _particle_generators;
@@ -46,4 +50,8 @@ protected:
 	ParticleGenerator* _firework_gen;
 
 	unique_ptr<ParticleForceRegistry> pFR;
+
+	// Explosion
+	ExplosionGenerator* eFG;
+	bool explode = false;
 };
