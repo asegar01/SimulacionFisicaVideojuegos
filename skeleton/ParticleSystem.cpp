@@ -161,7 +161,31 @@ void ParticleSystem::addWindParticles()
 	p->setRemainingTime(5.0);
 	_particles.push_back(p);
 
+	auto p2 = new Projectile(Projectile::PISTOL);
+	p2->setPosition({ -20.0, 40.0, 0.0 });
+	p2->setVelocity({ 30.0, 0.0, 0.0 });
+	p2->setAcceleration({ 0.0, 0.0, 0.0 });
+	p2->setMass(100.0f);
+	p2->setRemainingTime(5.0);
+	_particles.push_back(p2);
+
 	auto wFG = new WindGenerator({ -10.0, 10.0, 0.0 }, 0.1, 0.0, 50.0, 50.0, 50.0);
 
 	pFR.get()->addRegistry(wFG, p);
+	pFR.get()->addRegistry(wFG, p2);
+}
+
+void ParticleSystem::addWhirlwindParticles() 
+{
+	auto p = new Projectile(Projectile::PISTOL);
+	p->setPosition({ 0.0, 0.0, 0.0 });
+	p->setVelocity({ 0.0, 0.0, 0.0 });
+	p->setAcceleration({ 0.0, 0.0, 0.0 });
+	p->setMass(50.0f);
+	p->setRemainingTime(10.0f);
+	_particles.push_back(p);
+
+	auto whFG = new WhirlwindGenerator({ 10.0, 0.0, 10.0 }, 0.1, 0.2);
+
+	pFR.get()->addRegistry(whFG, p);
 }

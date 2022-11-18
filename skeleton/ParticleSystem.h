@@ -9,6 +9,7 @@
 #include "ParticleForceRegistry.h"
 #include "GravityForceGenerator.h"
 #include "WindGenerator.h"
+#include "WhirlwindGenerator.h"
 
 class ParticleSystem
 {
@@ -33,6 +34,9 @@ public:
 
 	// Viento
 	void addWindParticles();
+
+	// Torbellino
+	void addWhirlwindParticles();
 
 protected:
 	list<Particle*> _particles;

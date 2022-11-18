@@ -151,6 +151,9 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'N': // WIND
 		particleSystem.get()->addWindParticles();
 		break;
+	case 'H': // WINDWHIRL
+		particleSystem.get()->addWhirlwindParticles();
+		break;
 	default: 
 		break;
 	}
