@@ -15,17 +15,18 @@ using namespace std;
 
 enum ParticleType
 {
-	SPHERE, BOX, CAPSULE, FIREWORK
+	SPHERE, BOX, CAPSULE, FIREWORK, PLANE
 };
 
 class Particle
 {
 public:
 	Particle(Vector3 Pos, Vector3 Vel);
-	Particle(ParticleType type, Vector3 Pos, Vector3 Vel, Vector3 Acc, float Damping, float mass);
-	~Particle() { /*DeregisterRenderItem(renderItem);*/ };
+	Particle(ParticleType type, Vector3 Pos, Vector3 Vel, Vector3 Acc, float Damping, float Time);
+	Particle(ParticleType type, Vector3 Pos, Vector3 Vel, Vector3 Acc, float Damping, float Mass, float Time);
+	~Particle() { DeregisterRenderItem(renderItem); };
 
-	void integrate(double t);
+	virtual void integrate(double t);
 
 	void setMass(float Mass) { mass = Mass; };
 	void setPosition(Vector3 Pos) { pose.p = Pos; };

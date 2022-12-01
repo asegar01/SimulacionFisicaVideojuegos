@@ -145,17 +145,41 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'F': // FIREWORK
 		particleSystem.get()->shootFirework(0);
 		break;
-	case 'G': // GRAVITY
+	case 'N': // SPRING WIND
+		particleSystem.get()->generateWindSpringDemo();
+		break;
+	case '1': // GRAVITY
 		particleSystem.get()->addGravityParticles();
 		break;
-	case 'N': // WIND
+	case '2': // WIND
 		particleSystem.get()->addWindParticles();
 		break;
-	case 'H': // WINDWHIRL
+	case '3': // WINDWHIRL
 		particleSystem.get()->addWhirlwindParticles();
 		break;
-	case 'X': // EXPLOSION
+	case '4': // EXPLOSION
 		particleSystem.get()->addExplosionParticles();
+		break;
+	case '5': // SPRING
+		particleSystem.get()->generateSpringDemo();
+		break;
+	case '+': // K++ / V++
+		particleSystem.get()->increase();
+		break;
+	case '-': // K-- / V--
+		particleSystem.get()->decrease();
+		break;
+	case '6': // SLINKY
+		particleSystem.get()->generateSlinky();
+		break;
+	case '7': // BUOYANCY
+		particleSystem.get()->generateBuoyancy();
+		break;
+	case '.': // M++
+		particleSystem.get()->increaseMass();
+		break;
+	case ',': // M--
+		particleSystem.get()->decreaseMass();
 		break;
 	default: 
 		break;

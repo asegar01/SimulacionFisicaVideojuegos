@@ -11,6 +11,9 @@
 #include "WindGenerator.h"
 #include "WhirlwindGenerator.h"
 #include "ExplosionGenerator.h"
+#include "SpringForceGenerator.h"
+#include "AnchoredSpringFG.h"
+#include "BuoyancyForceGenerator.h"
 
 class ParticleSystem
 {
@@ -42,6 +45,20 @@ public:
 	// Explosion
 	void addExplosionParticles();
 
+	// Muelle
+	void generateSpringDemo();
+	void increase();
+	void decrease();
+	void generateWindSpringDemo();
+
+	// Slinky
+	void generateSlinky();
+
+	// Flotabilidad
+	void generateBuoyancy();
+	inline void increaseMass() { buoyancyParticle->setMass(buoyancyParticle->getMass() + 1.0f); cout << buoyancyParticle->getMass(); }
+	inline void decreaseMass() { if (buoyancyParticle->getMass() > 1.0f) buoyancyParticle->setMass(buoyancyParticle->getMass() - 1.0f); }
+
 protected:
 	list<Particle*> _particles;
 	list<ParticleGenerator*> _particle_generators;
@@ -50,8 +67,20 @@ protected:
 	ParticleGenerator* _firework_gen;
 
 	unique_ptr<ParticleForceRegistry> pFR;
+	list<ForceGenerator*> _force_generators;
 
 	// Explosion
 	ExplosionGenerator* eFG;
 	bool explode = false;
+
+	// Muelle
+	Particle* springParticle;
+	AnchoredSpringFG* aSFG;
+
+	// Flotabilidad
+	Particle* buoyancyParticle;
+	BuoyancyForceGenerator* bFG;
+
+	bool springActive = false;
+	bool buoyancyActive = false;
 };

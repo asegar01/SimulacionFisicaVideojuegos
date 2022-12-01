@@ -5,8 +5,11 @@ Particle::Particle(Vector3 Pos, Vector3 Vel) : pose(Pos), _vel(Vel), _remaining_
 	//renderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), &pose, Vector4(1.0, 0.0, 1.0, 1.0));
 }
 
-Particle::Particle(ParticleType type, Vector3 Pos, Vector3 Vel, Vector3 Acc, float Damping, float Mass)
-	: pose(Pos), _vel(Vel), _accel(Acc), damping(Damping), _remaining_time(5), _type(type), mass(Mass) {}
+Particle::Particle(ParticleType type, Vector3 Pos, Vector3 Vel, Vector3 Acc, float Damping, float Mass) 
+	: pose(Pos), _vel(Vel), _accel(Acc), damping(Damping), _type(type), mass(Mass), _remaining_time(5) { setType(type); }
+
+Particle::Particle(ParticleType type, Vector3 Pos, Vector3 Vel, Vector3 Acc, float Damping, float Mass, float Time)
+	: pose(Pos), _vel(Vel), _accel(Acc), damping(Damping), _type(type), mass(Mass), _remaining_time(Time) { setType(type); }
 
 void Particle::integrate(double t)
 {
@@ -17,7 +20,7 @@ void Particle::integrate(double t)
 	pose.p += _vel * t;
 
 	Vector3 totalAcceleration = _accel;
-	_accel += force * getInverseMass();
+	totalAcceleration += force * getInverseMass();
 
 	// Update linear velocity
 	_vel += totalAcceleration * t;
@@ -37,16 +40,15 @@ Particle* Particle::clone() const
 	return p;
 }
 
-void Particle::setType(ParticleType type) 
+void Particle::setType(ParticleType type)
 {
-	_type = type;
-
 	switch (_type)
 	{
 	case SPHERE: renderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), &pose, Vector4(1.0, 0.0, 1.0, 1.0)); break;
 	case BOX: renderItem = new RenderItem(CreateShape(PxBoxGeometry(1, 1, 1)), &pose, Vector4(1.0, 1.0, 0.0, 1.0)); break;
 	case CAPSULE: renderItem = new RenderItem(CreateShape(PxCapsuleGeometry(1, 1)), &pose, Vector4(0.0, 1.0, 1.0, 1.0)); break;
 	case FIREWORK: renderItem = new RenderItem(CreateShape(PxSphereGeometry(2)), &pose, Vector4(1.0, 0.0, 0.0, 1.0)); break;
+	case PLANE: renderItem = new RenderItem(CreateShape(PxBoxGeometry(10, 1, 10)), &pose, Vector4(0.0, 0.0, 1.0, 1.0)); break;
 	default: break;
 	}
 }

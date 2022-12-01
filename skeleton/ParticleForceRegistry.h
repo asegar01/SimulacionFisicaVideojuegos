@@ -23,6 +23,8 @@ public:
 
 	void addRegistry(ForceGenerator* fg, Particle* p) { insert({ fg, p }); }
 
+	void deleteRegistry(ForceGenerator* fg) { erase(fg); }
+
 	void deleteParticleRegistry(Particle* p) 
 	{  
 		for (auto it = begin(); it != end(); it++) 

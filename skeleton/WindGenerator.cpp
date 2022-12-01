@@ -3,7 +3,7 @@
 void WindGenerator::updateForce(Particle* particle, double t) 
 {
 	// Check that the particle has Finite Mass
-	if (fabs(particle->getInverseMass()) < 1e-10) return;
+	if (fabs(particle->getInverseMass()) < 1e-10 || _remaining_time < 0) return;
 
 	// Check that the particle is inside action volume
 	auto const pos = particle->getPosition().p;
@@ -19,4 +19,6 @@ void WindGenerator::updateForce(Particle* particle, double t)
 	// Apply the wind force
 	cout << windF.x << "\t" << windF.y << "\t" << windF.z << endl;
 	particle->addForce(windF);
+
+	_remaining_time -= t;
 }

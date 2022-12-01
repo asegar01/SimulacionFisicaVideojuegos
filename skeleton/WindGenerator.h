@@ -18,4 +18,7 @@ protected:
 
 	// Area de accion
 	double _x, _y, _z;
+
+	// Tiempo de accion
+	double _remaining_time = 5;
 };
