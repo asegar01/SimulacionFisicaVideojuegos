@@ -196,7 +196,7 @@ void ParticleSystem::addExplosionParticles()
 
 void ParticleSystem::generateSpringDemo() 
 {
-	/*Particle* p1 = new Particle(SPHERE, { -10.0, 10.0, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 }, 0.85, 2.0f, 60.0f);
+	Particle* p1 = new Particle(SPHERE, { -10.0, 10.0, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 }, 0.85, 2.0f, 60.0f);
 	Particle* p2 = new Particle(SPHERE, { 10.0, 10.0, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 }, 0.85, 2.0f, 60.0f);
 
 	SpringForceGenerator* f1 = new SpringForceGenerator(1, 10, p2);
@@ -207,7 +207,7 @@ void ParticleSystem::generateSpringDemo()
 	_force_generators.push_back(f1);
 	_force_generators.push_back(f2);
 	_particles.push_back(p1);
-	_particles.push_back(p2);*/
+	_particles.push_back(p2);
 
 	// Then one spring with one fixed side
 	springParticle = new Particle(SPHERE, { -10.0, 60.0, 0.0 }, { 0.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0 }, 0.85, 2.0f, 60.0f);
