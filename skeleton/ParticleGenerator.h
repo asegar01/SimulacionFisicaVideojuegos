@@ -18,6 +18,7 @@ public:
 	// Establece el tipo de particula
 	void setParticle(Particle* model) { _model = model; };
 	string getName() { return _name; };
+	int getNumParticles() { return _num_particles; };
 
 	virtual list<Particle*> generateParticles() = 0;
 

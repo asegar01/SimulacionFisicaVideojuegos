@@ -2,17 +2,15 @@
 
 ParticleSystem::ParticleSystem() : _particles(0)
 {
-	// Particula uniforme
+	// Generador particulas uniformes
 	/*_particle_generators.push_back(new UniformParticleGenerator("uniform", { 10.0, 20.0, 10.0 }, { 5.0, -10.0, 5.0 } , 0.5, 
 		new Particle({ 5.0, 5.0, 5.0 }, { 10.0, 10.0, 0.0 }), { 10.0, 10.0, 0.0 }, { 5.0, 5.0, 5.0 }));*/
 
-	// Particula gaussiana
+	// Generador particulas gaussianas
 	/*_particle_generators.push_back(new GaussianParticleGenerator("gaussian", { 10.0, 20.0, 10.0 }, { 5.0, -10.0, 5.0 }, 0.5, 
 		new Particle({ 5.0, 5.0, 5.0 }, { 10.0, 10.0, 0.0 }), { 10.0, 10.0, 10.0 }, { 5.0, 5.0, 5.0 }, 5.0));*/
 
-	/*_firework_gen.push_back(shared_ptr<ParticleGenerator>(new GaussianParticleGenerator("fireworks", { 0.0, 20.0, 0.0 }, { 20, 10, 20 }, 1.0, 
-		_fireworks_pool[0], {2.0, 1.0, 2.0}, {1.0, 1.0, 1.0}, 1.0)));*/
-
+	// Sistema de fireworks
 	//generateFireworkSystem();
 
 	pFR = make_unique<ParticleForceRegistry>();
@@ -52,7 +50,7 @@ void ParticleSystem::update(double t)
 	if(_particle_generators.size() != 0)
 	for (auto p : _particle_generators) 
 	{
-		if (_particles.size() < 10) 
+		if (_particles.size() < 50) 
 		{
 			auto l = (p)->generateParticles();
 
@@ -68,7 +66,7 @@ void ParticleSystem::update(double t)
 		(*p)->integrate(t);
 
 		// Remueve la particula si es invalida
-		if ((*p)->getPosition().p.y < -200.0f ||
+		if ((*p)->getPosition().p.y < 0.0f ||
 			(*p)->getRemainingTime() < 0 ||
 			(*p)->getPosition().p.z > 200.0f)
 		{
@@ -121,7 +119,7 @@ void ParticleSystem::generateFireworkSystem()
 	// Push back pool fireworks de new firework
 	shared_ptr<ParticleGenerator> pG1(new GaussianParticleGenerator("gaussian", { 10.0, 20.0, 10.0 }, { 5.0, -10.0, 5.0 }, 0.5,
 		new Particle({ 5.0, 5.0, 5.0 }, { 10.0, 10.0, 0.0 }), { 10.0, 10.0, 10.0 }, { 5.0, 5.0, 5.0 }, 5.0));
-	_fireworks_pool.push_back(new Firework({ 0.0, 0.0, 0.0 }, { 0.0, 30.0, 0.0 }, { 0.0, -10.0, 0.0 }, 0.99, { pG1 }));
+	_fireworks_pool.push_back(new Firework({ 0.0, 0.0, 0.0 }, { 0.0, 30.0, 0.0 }, { 0.0, -10.0, 0.0 }, 0.99, 2.0f, { pG1 }));
 }
 
 void ParticleSystem::shootFirework(int type)

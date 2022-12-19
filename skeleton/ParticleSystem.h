@@ -14,6 +14,8 @@
 #include "SpringForceGenerator.h"
 #include "AnchoredSpringFG.h"
 #include "BuoyancyForceGenerator.h"
+#include "GaussianSolidGenerator.h"
+#include "WorldManager.h"
 
 class ParticleSystem
 {
@@ -62,6 +64,7 @@ public:
 protected:
 	list<Particle*> _particles;
 	list<ParticleGenerator*> _particle_generators;
+	list<SolidGenerator*> _solid_generators;
 
 	vector<Firework*> _fireworks_pool;
 	ParticleGenerator* _firework_gen;
@@ -83,4 +86,6 @@ protected:
 
 	bool springActive = false;
 	bool buoyancyActive = false;
+
+	WorldManager* worldManager;
 };

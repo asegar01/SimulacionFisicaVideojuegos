@@ -1,6 +1,6 @@
 #include "Particle.h"
 
-Particle::Particle(Vector3 Pos, Vector3 Vel) : pose(Pos), _vel(Vel), _remaining_time(5)
+Particle::Particle(Vector3 Pos, Vector3 Vel) : pose(Pos), _vel(Vel), _remaining_time(5.0)
 {
 	//renderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), &pose, Vector4(1.0, 0.0, 1.0, 1.0));
 }
@@ -49,6 +49,7 @@ void Particle::setType(ParticleType type)
 	case CAPSULE: renderItem = new RenderItem(CreateShape(PxCapsuleGeometry(1, 1)), &pose, Vector4(0.0, 1.0, 1.0, 1.0)); break;
 	case FIREWORK: renderItem = new RenderItem(CreateShape(PxSphereGeometry(2)), &pose, Vector4(1.0, 0.0, 0.0, 1.0)); break;
 	case PLANE: renderItem = new RenderItem(CreateShape(PxBoxGeometry(10, 1, 10)), &pose, Vector4(0.0, 0.0, 1.0, 1.0)); break;
+	case UNUSED: break;
 	default: break;
 	}
 }

@@ -15,7 +15,7 @@ using namespace std;
 
 enum ParticleType
 {
-	SPHERE, BOX, CAPSULE, FIREWORK, PLANE
+	SPHERE, BOX, CAPSULE, FIREWORK, PLANE, UNUSED
 };
 
 class Particle

@@ -11,6 +11,7 @@
 #include "Particle.h"
 #include "Projectile.h"
 #include "ParticleSystem.h"
+#include "WorldManager.h"
 
 #include <iostream>
 
@@ -46,6 +47,11 @@ std::list<Projectile*> projectiles;
 /// </summary>
 std::unique_ptr<ParticleSystem> particleSystem;
 
+/// <summary>
+/// World Manager
+/// </summary>
+std::unique_ptr<WorldManager> worldManager;
+
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -59,6 +65,10 @@ void initPhysics(bool interactive)
 
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),true,gPvd);
 
+	/// <summary>
+	/// Materiales
+	/// </summary>
+	/// <param name="interactive"></param>
 	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
@@ -73,6 +83,8 @@ void initPhysics(bool interactive)
 	//particle = std::make_unique<Particle>(Vector3(10.0, 10.0, 0.0), Vector3(0.0, 10.0, 0.0), Vector3(0.0, 10.0, 0.0), 0.9);
 
 	particleSystem = std::make_unique<ParticleSystem>();
+
+	worldManager = std::make_unique<WorldManager>(gScene, gPhysics);
 }
 
 
@@ -90,6 +102,8 @@ void stepPhysics(bool interactive, double t)
 	for (auto p : projectiles) p->integrate(t);
 
 	particleSystem->update(t);
+
+	worldManager->update(t);
 }
 
 // Function to clean data
