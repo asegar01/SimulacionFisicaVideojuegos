@@ -58,7 +58,7 @@ public:
 
 	// Flotabilidad
 	void generateBuoyancy();
-	inline void increaseMass() { buoyancyParticle->setMass(buoyancyParticle->getMass() + 1.0f); cout << buoyancyParticle->getMass(); }
+	inline void increaseMass() { buoyancyParticle->setMass(buoyancyParticle->getMass() + 1.0f); }
 	inline void decreaseMass() { if (buoyancyParticle->getMass() > 1.0f) buoyancyParticle->setMass(buoyancyParticle->getMass() - 1.0f); }
 
 protected:
@@ -73,19 +73,19 @@ protected:
 	list<ForceGenerator*> _force_generators;
 
 	// Explosion
-	ExplosionGenerator* eFG;
+	ExplosionGenerator* eFG = nullptr;
 	bool explode = false;
 
 	// Muelle
-	Particle* springParticle;
-	AnchoredSpringFG* aSFG;
+	Particle* springParticle = nullptr;
+	AnchoredSpringFG* aSFG = nullptr;
 
 	// Flotabilidad
-	Particle* buoyancyParticle;
-	BuoyancyForceGenerator* bFG;
+	Particle* buoyancyParticle = nullptr;
+	BuoyancyForceGenerator* bFG = nullptr;
 
 	bool springActive = false;
 	bool buoyancyActive = false;
 
-	WorldManager* worldManager;
+	WorldManager* worldManager = nullptr;
 };

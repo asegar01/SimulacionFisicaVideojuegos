@@ -10,6 +10,7 @@ public:
 		: ParticleDragGenerator(k1, k2), _vel(w), _x(x), _y(y), _z(z) {};
 
 	virtual void updateForce(Particle* particle, double t);
+	virtual void updateForceRB(PxRigidDynamic* solid, double t);
 	inline void setWindVelocity(Vector3 v) { _vel = v; }
 
 protected:

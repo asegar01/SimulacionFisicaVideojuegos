@@ -4,8 +4,6 @@
 
 #include <map>
 
-typedef pair<ForceGenerator*, Particle*> FRPair;
-
 /// <summary>
 /// Una misma clave -generador- puede tener mas de un valor -particula-
 /// </summary>

@@ -13,6 +13,7 @@ ParticleSystem::ParticleSystem() : _particles(0)
 	// Sistema de fireworks
 	//generateFireworkSystem();
 
+	// Fuerzas de la particula
 	pFR = make_unique<ParticleForceRegistry>();
 }
 
@@ -111,12 +112,6 @@ void ParticleSystem::decrease()
 
 void ParticleSystem::generateFireworkSystem()
 {
-	//auto a = new Firework(Vector3(10, 10, 0), Vector3(0, 15, 0), Vector3(0, 1, 0), 0.99f, _firework_gen);
-	//_fireworks_pool.push_back(new Firework(Vector3(10, 10, 0), Vector3(0, 15, 0), Vector3(0, 1, 0), 0.99f, _firework_gen));
-
-	// Se crea un generador de particulas - gaussiano
-	// Se copian y modifican las propiedades
-	// Push back pool fireworks de new firework
 	shared_ptr<ParticleGenerator> pG1(new GaussianParticleGenerator("gaussian", { 10.0, 20.0, 10.0 }, { 5.0, -10.0, 5.0 }, 0.5,
 		new Particle({ 5.0, 5.0, 5.0 }, { 10.0, 10.0, 0.0 }), { 10.0, 10.0, 10.0 }, { 5.0, 5.0, 5.0 }, 5.0));
 	_fireworks_pool.push_back(new Firework({ 0.0, 0.0, 0.0 }, { 0.0, 30.0, 0.0 }, { 0.0, -10.0, 0.0 }, 0.99, 2.0f, { pG1 }));

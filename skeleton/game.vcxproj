@@ -295,6 +295,8 @@
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
     <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="SolidForceGenerator.h" />
+    <ClInclude Include="SolidForceRegistry.h" />
     <ClInclude Include="SolidGenerator.h" />
     <ClInclude Include="SpringForceGenerator.h" />
     <ClInclude Include="UniformParticleGenerator.h" />

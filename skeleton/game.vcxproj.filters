@@ -57,6 +57,8 @@
     <ClInclude Include="SolidGenerator.h" />
     <ClInclude Include="GaussianSolidGenerator.h" />
     <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="SolidForceGenerator.h" />
+    <ClInclude Include="SolidForceRegistry.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -8,7 +8,6 @@
 #include "RigidBody.h"
 #include "WorldManager.h"
 
-class RigidBody;
 using namespace physx;
 using namespace std;
 

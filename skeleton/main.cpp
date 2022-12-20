@@ -52,6 +52,11 @@ std::unique_ptr<ParticleSystem> particleSystem;
 /// </summary>
 std::unique_ptr<WorldManager> worldManager;
 
+/// <summary>
+/// Utilizando objetos rigidos
+/// </summary>
+bool rB = false;
+
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
@@ -162,38 +167,53 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'N': // SPRING WIND
 		particleSystem.get()->generateWindSpringDemo();
 		break;
+	case '0': // USO RB
+		rB = !rB;
+		break;
 	case '1': // GRAVITY
 		particleSystem.get()->addGravityParticles();
 		break;
 	case '2': // WIND
-		particleSystem.get()->addWindParticles();
+		if (rB) worldManager.get()->generateWind();
+		else particleSystem.get()->addWindParticles();
 		break;
 	case '3': // WINDWHIRL
-		particleSystem.get()->addWhirlwindParticles();
+		if (rB) worldManager.get()->generateWhirlwind();
+		else particleSystem.get()->addWhirlwindParticles();
 		break;
 	case '4': // EXPLOSION
-		particleSystem.get()->addExplosionParticles();
+		if (rB) worldManager.get()->generateExplosion();
+		else particleSystem.get()->addExplosionParticles();
 		break;
 	case '5': // SPRING
-		particleSystem.get()->generateSpringDemo();
+		if (rB) worldManager.get()->generateSpring();
+		else particleSystem.get()->generateSpringDemo();
 		break;
 	case '+': // K++ / V++
-		particleSystem.get()->increase();
+		if (rB) worldManager.get()->increase();
+		else particleSystem.get()->increase();
 		break;
 	case '-': // K-- / V--
-		particleSystem.get()->decrease();
+		if (rB) worldManager.get()->decrease();
+		else particleSystem.get()->decrease();
 		break;
 	case '6': // SLINKY
 		particleSystem.get()->generateSlinky();
 		break;
 	case '7': // BUOYANCY
-		particleSystem.get()->generateBuoyancy();
+		if (rB) worldManager.get()->generateBuoyancy();
+		else particleSystem.get()->generateBuoyancy();
+		break;
+	case '8': // RB SCENE
+		worldManager.get()->createScene();
 		break;
 	case '.': // M++
-		particleSystem.get()->increaseMass();
+		if (rB) worldManager.get()->increaseMass();
+		else particleSystem.get()->increaseMass();
 		break;
 	case ',': // M--
-		particleSystem.get()->decreaseMass();
+		if (rB) worldManager.get()->decreaseMass();
+		else particleSystem.get()->decreaseMass();
 		break;
 	default: 
 		break;
