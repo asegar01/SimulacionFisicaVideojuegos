@@ -73,9 +73,9 @@ void WorldManager::createWorldScene()
 
 	// Siguiente escena
 	nextScene();
+	/*nextScene();
 	nextScene();
-	nextScene();
-	nextScene();
+	nextScene();*/
 }
 
 void WorldManager::nextScene()
