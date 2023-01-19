@@ -27,7 +27,7 @@ class WorldManager
 {
 public:
 	WorldManager(PxScene* gScene, PxPhysics* gPhysics) : _gScene(gScene), _gPhysics(gPhysics), _currentScene(SCENE0), _nextSceneActive(false), 
-		_explode(false), _activeCooldown(false), _cooldownTime(0.0) { sFR = make_unique<SolidForceRegistry>(); };
+		_explode(false), _activeCooldown(false), _cooldownTime(10.0) { sFR = make_unique<SolidForceRegistry>(); };
 	~WorldManager() {};
 
 	// Escena general
