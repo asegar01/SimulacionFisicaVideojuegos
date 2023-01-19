@@ -59,6 +59,8 @@ bool Camera::handleKey(unsigned char key, int x, int y, float speed)
 	PX_UNUSED(x);
 	PX_UNUSED(y);
 
+	if (_follow) return true;
+
 	PxVec3 viewY = mDir.cross(PxVec3(0,1,0)).getNormalized();
 	switch(toupper(key))
 	{
@@ -115,6 +117,14 @@ PxVec3 Camera::getEye() const
 PxVec3 Camera::getDir() const
 { 
 	return mDir; 
+}
+
+void Camera::followActor(physx::PxRigidDynamic* actor)
+{
+	if (!_follow) return;
+
+	PxVec3 pos = actor->getGlobalPose().p;
+	mEye = PxVec3(pos.x - mDir.x * 20, pos.y - mDir.y * 20 + 5, pos.z - mDir.z * 20);
 }
 
 

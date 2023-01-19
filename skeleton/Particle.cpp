@@ -1,55 +1,40 @@
 #include "Particle.h"
 
-Particle::Particle(Vector3 Pos, Vector3 Vel) : pose(Pos), _vel(Vel), _remaining_time(5.0)
+Particle::Particle(ParticleType type, Vector3 pos, Vector3 vel, Vector3 acc, float mass, float damping, double time)
+	: _type(type), _pos(pos), _vel(vel), _acc(acc), _mass(mass), _damping(damping), _time(time) 
 {
-	//renderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), &pose, Vector4(1.0, 0.0, 1.0, 1.0));
+	switch (_type)
+	{
+	case SPHERE: renderItem = new RenderItem(CreateShape(PxSphereGeometry(_mass)), &_pos, Vector4(1.0, 0.0, 1.0, 1.0)); break;
+	case BOX: renderItem = new RenderItem(CreateShape(PxBoxGeometry(_mass, _mass, _mass)), &_pos, Vector4(1.0, 1.0, 0.0, 1.0)); break;
+	case CAPSULE: renderItem = new RenderItem(CreateShape(PxCapsuleGeometry(_mass, _mass)), &_pos, Vector4(0.0, 1.0, 1.0, 1.0)); break;
+	case FIREWORK: renderItem = new RenderItem(CreateShape(PxSphereGeometry(_mass)), &_pos, Vector4(1.0, 0.0, 0.0, 1.0)); break;
+	case WATER: renderItem = new RenderItem(CreateShape(PxBoxGeometry(10.0, 1.0, 7.5)), &_pos, Vector4(0.0, 0.0, 0.5, 1.0)); break;
+	case UNUSED: break;
+	default: break;
+	}
 }
 
-Particle::Particle(ParticleType type, Vector3 Pos, Vector3 Vel, Vector3 Acc, float Damping, float Mass) 
-	: pose(Pos), _vel(Vel), _accel(Acc), damping(Damping), _type(type), mass(Mass), _remaining_time(5) { setType(type); }
-
-Particle::Particle(ParticleType type, Vector3 Pos, Vector3 Vel, Vector3 Acc, float Damping, float Mass, float Time)
-	: pose(Pos), _vel(Vel), _accel(Acc), damping(Damping), _type(type), mass(Mass), _remaining_time(Time) { setType(type); }
-
-void Particle::integrate(double t)
+void Particle::integrate(double t) 
 {
 	// Trivial case, infinite mass --> do nothing
 	if (getInverseMass() <= 0.0f) return;
 
 	// Update position
-	pose.p += _vel * t;
-
-	Vector3 totalAcceleration = _accel;
-	totalAcceleration += force * getInverseMass();
+	_pos.p += _vel * t;
 
 	// Update linear velocity
-	_vel += totalAcceleration * t;
+	_vel += _acc * t;
 
 	// Impose drag (damping)
-	_vel *= powf(damping, t);
-
-	clearForce();
+	_vel *= powf(_damping, t);
 
 	// Actualiza el tiempo de vida restante de la particula
-	_remaining_time -= t;
+	_time -= t;
 }
 
 Particle* Particle::clone() const
 {
-	Particle* p = new Particle(SPHERE, pose.p, _vel, _accel, damping, mass);
+	Particle* p = new Particle(FIREWORK, _pos.p, _vel, _acc, _mass, _damping, _time);
 	return p;
-}
-
-void Particle::setType(ParticleType type)
-{
-	switch (_type)
-	{
-	case SPHERE: renderItem = new RenderItem(CreateShape(PxSphereGeometry(1)), &pose, Vector4(1.0, 0.0, 1.0, 1.0)); break;
-	case BOX: renderItem = new RenderItem(CreateShape(PxBoxGeometry(1, 1, 1)), &pose, Vector4(1.0, 1.0, 0.0, 1.0)); break;
-	case CAPSULE: renderItem = new RenderItem(CreateShape(PxCapsuleGeometry(1, 1)), &pose, Vector4(0.0, 1.0, 1.0, 1.0)); break;
-	case FIREWORK: renderItem = new RenderItem(CreateShape(PxSphereGeometry(2)), &pose, Vector4(1.0, 0.0, 0.0, 1.0)); break;
-	case PLANE: renderItem = new RenderItem(CreateShape(PxBoxGeometry(10, 1, 10)), &pose, Vector4(0.0, 0.0, 1.0, 1.0)); break;
-	case UNUSED: break;
-	default: break;
-	}
 }

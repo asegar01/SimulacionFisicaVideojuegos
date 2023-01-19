@@ -10,11 +10,11 @@
 class UniformParticleGenerator : public ParticleGenerator
 {
 public:
-	UniformParticleGenerator(string name, Vector3 pos, Vector3 vel, double genProb, Particle* model, Vector3 p, Vector3 v) :
-		ParticleGenerator(name, pos, vel, genProb, model), _pos_width(p), _vel_width(v) {};
+	UniformParticleGenerator(string name, Vector3 pos, Vector3 vel, Particle* model, Vector3 p, Vector3 v)
+		: ParticleGenerator(name, pos, vel, model), _posWidth(p), _velWidth(v) {};
 
 	virtual list<Particle*> generateParticles() override;
 
 protected:
-	Vector3 _vel_width, _pos_width;
+	Vector3 _posWidth, _velWidth;
 };

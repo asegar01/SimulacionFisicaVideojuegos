@@ -33,6 +33,8 @@
 
 #include "foundation/PxTransform.h"
 
+#include "PxRigidDynamic.h"
+
 namespace Snippets
 {
 class Camera
@@ -48,11 +50,24 @@ public:
 	physx::PxVec3		getEye()	const;
 	physx::PxVec3		getDir()	const;
 	physx::PxTransform	getTransform() const;
+
+	/// <summary>
+	/// Seguimiento de la camara
+	/// </summary>
+	/// <param name="geo"></param>
+	/// <returns></returns>
+	inline void changeFollow() { _follow = !_follow; }
+	void followActor(physx::PxRigidDynamic* actor);
+	bool getFollow() { return _follow; }
+
 private:
 	physx::PxVec3	mEye;
 	physx::PxVec3	mDir;
 	int				mMouseX;
 	int				mMouseY;
+
+	bool _follow = false;
+	physx::PxRigidDynamic* _followActor = nullptr;
 };
 
 

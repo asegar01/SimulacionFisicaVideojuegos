@@ -8,15 +8,10 @@
 #include "RenderUtils.hpp"
 #include "callbacks.hpp"
 
-#include "Particle.h"
-#include "Projectile.h"
 #include "ParticleSystem.h"
 #include "WorldManager.h"
 
 #include <iostream>
-
-#include <list>
-#include <chrono>
 
 using namespace physx;
 
@@ -36,13 +31,6 @@ PxScene*				gScene      = NULL;
 ContactReportCallback gContactReportCallback;
 
 /// <summary>
-/// Particula
-/// </summary>
-//std::unique_ptr<Particle> particle;
-
-std::list<Projectile*> projectiles;
-
-/// <summary>
 /// Sistema de particulas
 /// </summary>
 std::unique_ptr<ParticleSystem> particleSystem;
@@ -52,10 +40,9 @@ std::unique_ptr<ParticleSystem> particleSystem;
 /// </summary>
 std::unique_ptr<WorldManager> worldManager;
 
-/// <summary>
-/// Utilizando objetos rigidos
-/// </summary>
-bool rB = false;
+// Fin del juego --> no se actua frente a colisiones
+bool endGame = false;
+
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -70,10 +57,6 @@ void initPhysics(bool interactive)
 
 	gPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *gFoundation, PxTolerancesScale(),true,gPvd);
 
-	/// <summary>
-	/// Materiales
-	/// </summary>
-	/// <param name="interactive"></param>
 	gMaterial = gPhysics->createMaterial(0.5f, 0.5f, 0.6f);
 
 	// For Solid Rigids +++++++++++++++++++++++++++++++++++++
@@ -85,10 +68,10 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 
-	//particle = std::make_unique<Particle>(Vector3(10.0, 10.0, 0.0), Vector3(0.0, 10.0, 0.0), Vector3(0.0, 10.0, 0.0), 0.9);
-
+	// Sistema de particulas
 	particleSystem = std::make_unique<ParticleSystem>();
 
+	// World Manager
 	worldManager = std::make_unique<WorldManager>(gScene, gPhysics);
 }
 
@@ -103,11 +86,10 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 
-	//particle.get()->integrate(t);
-	for (auto p : projectiles) p->integrate(t);
-
+	// Actualiza el sistema de particulas
 	particleSystem->update(t);
 
+	// Actualiza la escena
 	worldManager->update(t);
 }
 
@@ -127,15 +109,6 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 	
 	gFoundation->release();
-
-	for (auto shot : projectiles) 
-	{
-		if (shot != nullptr) 
-		{
-			delete shot;
-			shot = nullptr;
-		}
-	}
 }
 
 // Function called when a key is pressed
@@ -146,84 +119,54 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	switch(toupper(key))
 	{
 	case ' ':
-	{
+		worldManager->addForce(GetCamera()->getDir() * 500);
 		break;
-	}
-	case 'P': // PISTOL
-		projectiles.push_back(new Projectile(Projectile::PISTOL));
+	case 'L':
+		//particleSystem->shootFirework(0);
+		/*cout << GetCamera()->getEye().x;
+		cout << GetCamera()->getEye().y;
+		cout << GetCamera()->getEye().z;
+		cout << GetCamera()->getDir().x;
+		cout << GetCamera()->getDir().y;
+		cout << GetCamera()->getDir().z;*/
 		break;
-	case 'R': // ARTILLERY
-		projectiles.push_back(new Projectile(Projectile::ARTILLERY));
+	case 'R':
+		worldManager->setBallStart();
 		break;
-	case 'B': // FIREBALL
-		projectiles.push_back(new Projectile(Projectile::FIREBALL));
+	case '1':
+		worldManager->createWorldScene();
 		break;
-	case 'L': // LASER
-		projectiles.push_back(new Projectile(Projectile::LASER));
+	case 'F': 
+		//GetCamera()->changeFollow(worldManager->getFollowActor());
 		break;
-	case 'F': // FIREWORK
-		particleSystem.get()->shootFirework(0);
-		break;
-	case 'N': // SPRING WIND
-		particleSystem.get()->generateWindSpringDemo();
-		break;
-	case '0': // USO RB
-		rB = !rB;
-		break;
-	case '1': // GRAVITY
-		particleSystem.get()->addGravityParticles();
-		break;
-	case '2': // WIND
-		if (rB) worldManager.get()->generateWind();
-		else particleSystem.get()->addWindParticles();
-		break;
-	case '3': // WINDWHIRL
-		if (rB) worldManager.get()->generateWhirlwind();
-		else particleSystem.get()->addWhirlwindParticles();
-		break;
-	case '4': // EXPLOSION
-		if (rB) worldManager.get()->generateExplosion();
-		else particleSystem.get()->addExplosionParticles();
-		break;
-	case '5': // SPRING
-		if (rB) worldManager.get()->generateSpring();
-		else particleSystem.get()->generateSpringDemo();
-		break;
-	case '+': // K++ / V++
-		if (rB) worldManager.get()->increase();
-		else particleSystem.get()->increase();
-		break;
-	case '-': // K-- / V--
-		if (rB) worldManager.get()->decrease();
-		else particleSystem.get()->decrease();
-		break;
-	case '6': // SLINKY
-		particleSystem.get()->generateSlinky();
-		break;
-	case '7': // BUOYANCY
-		if (rB) worldManager.get()->generateBuoyancy();
-		else particleSystem.get()->generateBuoyancy();
-		break;
-	case '8': // RB SCENE
-		worldManager.get()->createScene();
-		break;
-	case '.': // M++
-		if (rB) worldManager.get()->increaseMass();
-		else particleSystem.get()->increaseMass();
-		break;
-	case ',': // M--
-		if (rB) worldManager.get()->decreaseMass();
-		else particleSystem.get()->decreaseMass();
-		break;
-	default: 
+	default:
 		break;
 	}
 }
 
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
-	PX_UNUSED(actor1);
-	PX_UNUSED(actor2);
+	/*PX_UNUSED(actor1);
+	PX_UNUSED(actor2);*/
+
+	if (endGame) return;
+
+	if (actor1->getName() == "ball" && actor2->getName() == "goal")
+	{
+		if (!worldManager->getLastScene()) worldManager->changeSceneActive();
+		else 
+		{ 
+			particleSystem->generateFirework(); 
+			particleSystem->shootFirework(0);
+			endGame = !endGame;
+		}
+
+	}
+
+	else if (actor1->getName() == "ball" && actor2->getName() == "bomb") 
+	{
+		worldManager->generateExplosion(actor2);
+	}
 }
 
 

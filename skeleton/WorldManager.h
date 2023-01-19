@@ -3,79 +3,90 @@
 #include <string>
 #include <random>
 #include <list>
+#include <chrono>
 
 #include "RenderUtils.hpp"
 #include "core.hpp"
-
 #include "PxScene.h"
 #include "PxPhysics.h"
 #include "PxRigidDynamic.h"
 #include "SolidForceRegistry.h"
-#include "SpringForceGenerator.h"
-#include "AnchoredSpringFG.h"
 #include "WindGenerator.h"
-#include "WhirlwindGenerator.h"
+#include "BuoyancyGenerator.h"
 #include "ExplosionGenerator.h"
-#include "BuoyancyForceGenerator.h"
 
 using namespace physx;
 using namespace std;
 
-class SolidGenerator;
-class GaussianSolidGenerator;
+enum CurrentScene
+{
+	SCENE0, SCENE1, SCENE2, SCENE3, SCENE4
+};
 
 class WorldManager
 {
 public:
-	WorldManager(PxScene* gScene, PxPhysics* gPhysics) : _gScene(gScene), _gPhysics(gPhysics) { sFR = make_unique<SolidForceRegistry>(); }
+	WorldManager(PxScene* gScene, PxPhysics* gPhysics) : _gScene(gScene), _gPhysics(gPhysics), _currentScene(SCENE0), _nextSceneActive(false), 
+		_explode(false), _activeCooldown(false), _cooldownTime(0.0) { sFR = make_unique<SolidForceRegistry>(); };
 	~WorldManager() {};
 
-	int getNumSolids() { return _num_solids; }
+	// Escena general
+	void createWorldScene();
 
-	void createScene();
+	// Acceder a la siguiente escena
+	void nextScene();
+	void changeSceneActive() { _nextSceneActive = !_nextSceneActive; }
+	bool getLastScene() { return _currentScene == SCENE4; }
+
+	void createScene01();
+	void createScene02();
+	void createScene03();
+	void createScene04();
+
+	void addForce(Vector3 v);
+
+	// Reiniciar posicion pelota
+	void setBallStart();
+
+	// Establecer la posicion de la meta
+	void setGoalStart(float x);
+
+	// Creacion de plataforma
+	void createPlatform(float x);
+
+	// Creacion de explosivos
+	void createExplosive(float x, float z);
+	void generateExplosion(PxActor* actor);
+
 	void update(double t);
 
-	// Viento
-	void generateWind();
-
-	// Torbellino
-	void generateWhirlwind();
-
-	// Explosion
-	void generateExplosion();
-
-	// Muelle
-	void generateSpring();
-	void increase();
-	void decrease();
-
-	// Flotabilidad
-	void generateBuoyancy();
-	inline void increaseMass() { buoyancySolid->setMass(buoyancySolid->getMass() + 1.0f); }
-	inline void decreaseMass() { if (buoyancySolid->getMass() > 1.0f) buoyancySolid->setMass(buoyancySolid->getMass() - 1.0f); };
+	PxRigidDynamic* getFollowActor() { if(ball != nullptr) return ball; }
 
 protected:
 	PxScene* _gScene;
 	PxPhysics* _gPhysics;
-	int _num_solids = 10;
-	list<PxRigidDynamic*> _solids;
-	list<SolidGenerator*> _solid_generators;
-	double _time_gen = 2.0;
-	Vector3 size = { 5.0, 5.0, 5.0 };
+
+	// Pelota de golf
+	PxRigidDynamic* ball = nullptr;
+
+	// Meta
+	PxRigidStatic* goalLower = nullptr;
+	PxRigidStatic* goalUpper = nullptr;
+
+	// Gestion de escenas
+	CurrentScene _currentScene;
+	bool _nextSceneActive;
+
+	// Generadores de fuerzas
 	unique_ptr<SolidForceRegistry> sFR;
 
 	// Explosion
-	ExplosionGenerator* eFG = nullptr;
-	bool explode = false;
+	PxActor* _actor = nullptr;
+	ExplosionGenerator* eSFG = nullptr;
+	bool _explode;
 
-	// Muelle
-	PxRigidDynamic* springSolid = nullptr;
-	AnchoredSpringFG* aSFG = nullptr;
-
-	// Flotabilidad
-	PxRigidDynamic* buoyancySolid = nullptr;
-	BuoyancyForceGenerator* bFG = nullptr;
-
-	bool springActive = false;
-	bool buoyancyActive = false;
+	// Tiempo de cooldown para los disparos
+	bool _activeCooldown;
+	double _cooldownTime;
+	double _cooldown;
 };

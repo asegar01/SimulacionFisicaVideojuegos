@@ -1,15 +1,14 @@
 #pragma once
 
-#include "ParticleDragGenerator.h"
+#include "SolidDragGenerator.h"
 
-class WindGenerator : public ParticleDragGenerator
+class WindGenerator : public SolidDragGenerator
 {
 public:
-	WindGenerator(const float k1, const float k2) : ParticleDragGenerator(k1, k2) {};
-	WindGenerator(const Vector3& w, const float k1, const float k2, double x, double y, double z) 
-		: ParticleDragGenerator(k1, k2), _vel(w), _x(x), _y(y), _z(z) {};
+	WindGenerator(const float k1, const float k2) : SolidDragGenerator(k1, k2) {};
+	WindGenerator(const Vector3& w, const float k1, const float k2, double x, double y, double z, double offset)
+		: SolidDragGenerator(k1, k2), _vel(w), _x(x), _y(y), _z(z), _offset(offset) {};
 
-	virtual void updateForce(Particle* particle, double t);
 	virtual void updateForceRB(PxRigidDynamic* solid, double t);
 	inline void setWindVelocity(Vector3 v) { _vel = v; }
 
@@ -20,6 +19,6 @@ protected:
 	// Area de accion
 	double _x, _y, _z;
 
-	// Tiempo de accion
-	double _remaining_time = 5;
+	// Offset
+	double _offset;
 };

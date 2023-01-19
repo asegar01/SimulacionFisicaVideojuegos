@@ -1,19 +1,15 @@
 #pragma once
 
-#include "ForceGenerator.h"
 #include "SolidForceGenerator.h"
 
-#include <cmath>
-
-class ExplosionGenerator : public ForceGenerator, public SolidForceGenerator
+class ExplosionGenerator : public SolidForceGenerator
 {
 public:
-	ExplosionGenerator(const Vector3& e, float r, float k) : _origin(e), _r(r), _k(k), _time(0.0) {};
+	ExplosionGenerator(const Vector3& e, float r, float k) : _origin(e), _r(r), _k(k), _time(0.0), _timeLeft(1.0) {};
 
-	virtual void updateForce(Particle* particle, double t);
 	virtual void updateForceRB(PxRigidDynamic* solid, double t);
-
-	void addTime(float t) { _time += t; }
+	void addTime(double t) { _time += t; }
+	double getTime() { return _time; }
 
 protected:
 	// Origen de la explosion
@@ -25,8 +21,9 @@ protected:
 	// Intensidad de la explosion
 	float _k;
 
-	float _time;
+	// Tiempo transcurrido
+	double _time;
 
 	// Tiempo de accion
-	double _remaining_time = 5;
+	double _timeLeft;
 };

@@ -4,28 +4,23 @@
 #include "core.hpp"
 #include <list>
 #include <random>
+
 #include "Particle.h"
 
 class Particle;
 
-class ParticleGenerator
+class ParticleGenerator 
 {
 public:
-	ParticleGenerator(string name, Vector3 pos, Vector3 vel, double genProb, Particle* model) :
-		_name(name), _mean_pos(pos), _mean_vel(vel), _generation_probability(genProb), _model(model) {};
-	~ParticleGenerator() { delete _model; };
-
-	// Establece el tipo de particula
-	void setParticle(Particle* model) { _model = model; };
-	string getName() { return _name; };
-	int getNumParticles() { return _num_particles; };
+	ParticleGenerator(string name, Vector3 pos, Vector3 vel, Particle* model) 
+		: _name(name), _pos(pos), _vel(vel), _model(model), _numParticles(200) {};
+	~ParticleGenerator() { delete _model; }
 
 	virtual list<Particle*> generateParticles() = 0;
 
 protected:
 	string _name;
-	Vector3 _mean_pos, _mean_vel;
-	double _generation_probability;
-	int _num_particles = 10;
+	Vector3 _pos, _vel;
 	Particle* _model;
+	int _numParticles;
 };

@@ -3,9 +3,13 @@
 #include <iostream>
 #include <list>
 #include <random>
+#include <cmath>
 
 #include "core.hpp"
-#include "RigidBody.h"
+#include "PxRigidDynamic.h"
+
+using namespace physx;
+using namespace std;
 
 class SolidForceGenerator 
 {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "SolidForceGenerator.h"
-
 #include <map>
+
+#include "SolidForceGenerator.h"
 
 /// <summary>
 /// Una misma clave -generador- puede tener mas de un valor -rigidbody-
@@ -13,7 +13,7 @@ class SolidForceRegistry : public multimap<SolidForceGenerator*, PxRigidDynamic*
 public:
 	void updateForces(double duration) 
 	{
-		for (auto it = begin(); it != end(); ++it) 
+		for (auto it = begin(); it != end(); ++it)
 		{
 			it->first->updateForceRB(it->second, duration);
 		}
@@ -25,7 +25,7 @@ public:
 
 	void deleteSolidRegistry(PxRigidDynamic* rB) 
 	{
-		for (auto it = begin(); it != end(); ++it) 
+		for (auto it = begin(); it != end(); ++it)
 		{
 			if (it->second == rB) it = erase(it);
 		}

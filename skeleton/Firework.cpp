@@ -2,7 +2,7 @@
 
 Firework* Firework::clone() const 
 {
-	Firework* f = new Firework(pose.p, _vel, _accel, damping, mass, _gens);
+	Firework* f = new Firework(_pos.p, _vel, _acc, _mass, _damping, _time, _generations);
 	return f;
 }
 
@@ -10,11 +10,12 @@ list<Particle*> Firework::explode()
 {
 	list<Particle*> generations;
 
-	for (auto g : _gens) 
+	for (auto g : _generations) 
 	{
 		auto particles = g->generateParticles();
-		for (auto q : particles)
-			generations.push_back(q);
+
+		for (auto p : particles)
+			generations.push_back(p);
 	}
 
 	return generations;
